@@ -1,0 +1,191 @@
+<div class='tours-container'>
+    <table class='table' style='text-align:center;'>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Mode of Travel</th>
+                <th>Ticket Cost</th>
+                <th>Approving Manager</th>
+                <th>Status</th>
+                <th>Modified Date</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor='let tour of tours'>
+                <td>{{ tour.id }}</td>
+                <td>{{ tour.start_date }}</td>
+                <td>{{ tour.end_date }}</td>
+                <td>{{ tour.mode_of_travel }}</td>
+                <td>{{ tour.ticket_cost }}</td>
+                <td>{{ tour.approving_manager.first_name + ' ' + tour.approving_manager.last_name }} </td> 
+                <td>{{ tour.status }}</td>
+                <td>{{ tour.modified_date | date:'short' }}</td>
+                <td>
+                    <button class='btn btn-info' style='margin-right:5px;' *ngIf='tour.status=="Draft" && position=="Regular"' (click)='edit(tour.id)'>Edit</button>
+                    <button class='btn btn-secondary' (click)='view(tour.id)'>View</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+    
+
+<jw-modal id='edit-tour'>
+    <div class='row'>
+        <h1 class='col-lg-4 col-md-4 mx-auto' style='text-align:center;'>Edit Tour</h1>
+    </div>
+    <div>
+        <form [formGroup]='editTourForm'>
+            <div class='row'>
+                <div class='purpose col-md-8 col-lg-8 mx-auto'>
+                    <label for='purpose'>Purpose</label>
+                    <input type='text' class='form-control' formControlName='purpose' id='purpose'>
+                </div>
+            </div>
+            <br>
+            <div class='row'>
+                <div class='col-md-8 col-lg-8 mx-auto'>
+                    <div class='row'>
+                        <div class='start-date col-md-6 col-lg-6'>
+                            <label for='start-date'>Start Date</label>
+                            <input type='date' class='form-control' formControlName='startDate' id='start-date'>
+                        </div>
+                        <div class='end-date col-md-6 col-lg-6'>
+                            <label for='end-date'>End Date</label>
+                            <input type='date' class='form-control' formControlName='endDate' id='end-date'>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class='row'>
+                <div class='col-md-8 col-lg-8 mx-auto'>
+                    <div class='row'>
+                        <div class='mode-of-travel col-md-6 col-lg-6'>
+                            <label for='mode-of-travel'>Mode of Travel</label>
+                            <input type='text' class='form-control' formControlName='modeOfTravel' id='mode-of-travel'>
+                        </div>
+                        <div class='ticket-cost col-md-6 col-lg-6'>
+                            <label for='ticket-cost'>Ticket Cost</label>
+                            <input type='text' class='form-control' formControlName='ticketCost' id='ticket-cost'>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class='row'>
+                <div class='col-md-8 col-lg-8 mx-auto'>
+                    <div class='row'>
+                        <div class='origin-cab-fare col-md-6 col-lg-6'>
+                            <label for='origin-cab-fare'>Origin Cab Fare</label>
+                            <input type='text' class='form-control' formControlName='originCabFare' id='origin-cab-fare'>
+                        </div>
+                        <div class='destination-cab-fare col-md-6 col-lg-6'>
+                            <label for='destination-cab-fare'>Destination Cab Fare</label>
+                            <input type='text' class='form-control' formControlName='destinationCabFare' id='destination-cab-fare'>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class='row'>
+                <div class='col-md-8 col-lg-8 mx-auto'>
+                    <div class='row'>
+                        <div class='hotel-cost col-md-6 col-lg-6 mx-auto'>
+                            <label for='hotel-cost'>Hotel Cost</label>
+                            <input type='text' class='form-control' formControlName='hotelCost' id='hotel-cost'>
+                        </div>
+                        <div class='destination-conveyance col-md-6 col-lg-6 mx-auto'>
+                            <label for='destination-conveyance'>Destination Conveyance</label>
+                            <input type='text' class='form-control' formControlName='destinationConveyance' id='destination-conveyance'>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class='additional-information' *ngIf='tourStatus=="Request for Information"'>
+                <div class='additional-information col-md-8 col-lg-8 mx-auto'>
+                    <label for='additional-information'>Additional Information</label>
+                    <input type='text' class='form-control' formControlName='additionalInformation' id='additional-information'>
+                </div>
+            </div>
+        </form>   
+    </div>
+    <br>
+    <div class='row'> 
+        <div class='col-md-4 col-lg-4 mx-auto'>
+            <button class='btn btn-info' style='margin-right:5px;' (click)='editSaveDraft(tourID)'>Save As Draft</button>
+            <button class='btn btn-success' style='margin-right:5px;'>Submit</button>
+            <button class='btn btn-danger'style='margin-right:5px;' (click)='closeModal("edit-tour");'>Cancel</button>
+        </div>
+    </div>
+</jw-modal>
+
+<jw-modal id='view-tour'>
+    <div class='row'>
+        <h1 class='col-lg-4 col-md-4 mx-auto' style='text-align:center;'>View Tour</h1>
+    </div>
+    <div>
+        <table class='table' *ngIf='tourData'>
+            <tr>    
+                <td>Purpose:</td>
+                <td >{{ tourData.purpose }} </td>
+            </tr>
+            <tr>
+                <td>Start Date:</td>
+                <td>{{ tourData.start_date }} </td>
+            </tr>
+            <tr>
+                <td>End Date:</td>
+                <td>{{ tourData.end_date }}</td>
+            </tr>
+            <tr>
+                <td>Mode of Travel:</td>
+                <td>{{ tourData.mode_of_travel }} </td>
+            </tr>
+            <tr>
+                <td>Ticket Cost:</td>
+                <td>{{ tourData.ticket_cost }}</td>
+            </tr>
+            <tr>
+                <td>Origin Cab Fare:</td>
+                <td>{{ tourData.origin_cab_fare }}</td>
+            </tr>
+            <tr>
+                <td>Destination Cab Fare:</td>
+                <td>{{ tourData.destination_cab_fare }}</td>
+            </tr>
+            <tr>
+                <td>Hotel Cost:</td>
+                <td>{{ tourData.hotel_cost }}</td>
+            </tr>
+            <tr>
+                <td>Local Conveyance:</td>
+                <td>{{ tourData.conveyance }}
+            </tr>
+            <tr *ngIf='tourData.additional_information'>
+                <td>Additional Information</td>
+                <td>{{ tourData.additional_information }}
+            </tr>
+            <tr *ngIf='tourData.approving_manager'>
+                <td>Approving Manager</td>
+                <td>{{ tourData.approving_manager.first_name + ' ' + tourData.approving_manager.last_name }}
+            </tr>
+        </table>
+    </div>
+    <div class='row'> 
+        <div class='col-md-4 col-lg-4 mx-auto'>
+            <button class='btn btn-info' (click)='closeModal("view-tour");'>Close</button>
+        </div>
+    </div>
+    
+</jw-modal>
+
+
+
+
+  
+

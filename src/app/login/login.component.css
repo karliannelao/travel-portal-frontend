@@ -1,0 +1,13 @@
+.signin{
+    text-align:center;
+}
+
+.login-button{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.login-box{
+     border: 2px solid grey;
+     margin-top:50px;
+}
