@@ -1,5 +1,7 @@
 <div class='tours-container'>
-    <table class='table' style='text-align:center;'>
+    <button class='btn btn-info' *ngIf='position=="Regular"' (click)='create()' style='margin-left:20px;'>+Create New Tour</button>
+    <br><br>
+    <table class='table' style='text-align:center;' *ngIf='tours'>
         <thead>
             <tr>
                 <th>ID</th>
@@ -20,16 +22,23 @@
                 <td>{{ tour.end_date }}</td>
                 <td>{{ tour.mode_of_travel }}</td>
                 <td>{{ tour.ticket_cost }}</td>
-                <td>{{ tour.approving_manager.first_name + ' ' + tour.approving_manager.last_name }} </td> 
+                <td *ngIf='tour.approving_manager'>{{ tour.approving_manager.first_name + ' ' + tour.approving_manager.last_name }} </td> 
+                <td *ngIf='!tour.approving_manager'>None</td>
                 <td>{{ tour.status }}</td>
                 <td>{{ tour.modified_date | date:'short' }}</td>
                 <td>
+                    <button class='btn btn-info manager-btn' style='margin-right:5px;' *ngIf='position == "Manager" && tour.status != "Submitted to Finance"' (click)='approve(tour.id)'>Approve</button>
+                    <button class='btn btn-success manager-btn' style='margin-right:5px;' *ngIf='position == "Manager" && tour.status == "Approved"' (click)='submitToFinance(tour.id)'>Submit to Finance</button>
+                    <button class='btn btn-success finance-manager-btn' style='margin-right:5px;' *ngIf='position == "Finance Manager"' (click)='approve(tour.id)'>Approve</button>
                     <button class='btn btn-info' style='margin-right:5px;' *ngIf='tour.status=="Draft" && position=="Regular"' (click)='edit(tour.id)'>Edit</button>
                     <button class='btn btn-secondary' (click)='view(tour.id)'>View</button>
                 </td>
             </tr>
         </tbody>
     </table>
+    <div style='text-align:center;' *ngIf='!tours'>
+        No tours.
+    </div>
 </div>
     
 
@@ -106,6 +115,14 @@
                 </div>
             </div>
             <br>
+            <div class='approving-manager' *ngIf='approvingManagers'>
+                <div class='approving-manager col-md-4 col-lg-4 mx-auto'>
+                    <label for='approving-manager'>Approving Manager</label>
+                    <select class='form-control' formControlName='approvingManager' id='approving-manager'>
+                        <option *ngFor='let am of approvingManagers' [value]='am.id'>{{ am.first_name + " " + am.last_name }}</option>
+                    </select>
+                </div>
+            </div>
             <div class='additional-information' *ngIf='tourStatus=="Request for Information"'>
                 <div class='additional-information col-md-8 col-lg-8 mx-auto'>
                     <label for='additional-information'>Additional Information</label>
@@ -116,9 +133,9 @@
     </div>
     <br>
     <div class='row'> 
-        <div class='col-md-4 col-lg-4 mx-auto'>
-            <button class='btn btn-info' style='margin-right:5px;' (click)='editSaveDraft(tourID)'>Save As Draft</button>
-            <button class='btn btn-success' style='margin-right:5px;'>Submit</button>
+        <div class='col-md-4 col-lg-4 mx-auto' style='text-align:center'>
+            <button class='btn btn-info' style='margin-right:5px;' (click)='editSubmit(tourID)'>Save As Draft</button>
+            <button class='btn btn-success' style='margin-right:5px;' (click)='editSubmit(tourID, "submitted")'>Submit</button>
             <button class='btn btn-danger'style='margin-right:5px;' (click)='closeModal("edit-tour");'>Cancel</button>
         </div>
     </div>
@@ -128,57 +145,250 @@
     <div class='row'>
         <h1 class='col-lg-4 col-md-4 mx-auto' style='text-align:center;'>View Tour</h1>
     </div>
-    <div>
-        <table class='table' *ngIf='tourData'>
+    <br>
+    <div class='col-lg-6 col-md-6 mx-auto'>
+        <table class='table table-striped' *ngIf='tourData'>
             <tr>    
-                <td>Purpose:</td>
+                <td style='font-weight:bold;'>Purpose:</td>
                 <td >{{ tourData.purpose }} </td>
             </tr>
             <tr>
-                <td>Start Date:</td>
+                <td style='font-weight:bold;'>Start Date:</td>
                 <td>{{ tourData.start_date }} </td>
             </tr>
             <tr>
-                <td>End Date:</td>
+                <td style='font-weight:bold;'>End Date:</td>
                 <td>{{ tourData.end_date }}</td>
             </tr>
             <tr>
-                <td>Mode of Travel:</td>
+                <td style='font-weight:bold;'>Mode of Travel:</td>
                 <td>{{ tourData.mode_of_travel }} </td>
             </tr>
             <tr>
-                <td>Ticket Cost:</td>
+                <td style='font-weight:bold;'>Ticket Cost:</td>
                 <td>{{ tourData.ticket_cost }}</td>
             </tr>
             <tr>
-                <td>Origin Cab Fare:</td>
+                <td style='font-weight:bold;'>Origin Cab Fare:</td>
                 <td>{{ tourData.origin_cab_fare }}</td>
             </tr>
             <tr>
-                <td>Destination Cab Fare:</td>
+                <td style='font-weight:bold;'>Destination Cab Fare:</td>
                 <td>{{ tourData.destination_cab_fare }}</td>
             </tr>
             <tr>
-                <td>Hotel Cost:</td>
+                <td style='font-weight:bold;'>Hotel Cost:</td>
                 <td>{{ tourData.hotel_cost }}</td>
             </tr>
             <tr>
-                <td>Local Conveyance:</td>
+                <td style='font-weight:bold;'>Local Conveyance:</td>
                 <td>{{ tourData.conveyance }}
             </tr>
             <tr *ngIf='tourData.additional_information'>
-                <td>Additional Information</td>
+                <td style='font-weight:bold;'>Additional Information:</td>
                 <td>{{ tourData.additional_information }}
             </tr>
             <tr *ngIf='tourData.approving_manager'>
-                <td>Approving Manager</td>
+                <td style='font-weight:bold;'>Approving Manager:</td>
                 <td>{{ tourData.approving_manager.first_name + ' ' + tourData.approving_manager.last_name }}
+            </tr>
+            <tr>
+                <td style='font-weight:bold;'>Status</td>
+                <td>{{ tourData.status}}
+            </tr>
+            <tr *ngIf='tourData.feedback_date'>
+                <td style='font-weight:bold;'>Feedback Date:</td>
+                <td>{{ tourData.feedback_date | date:'short' }}</td>
+            </tr>
+            <tr *ngIf='tourData.financial_manager'>
+                <td style='font-weight:bold;'>Financial Manager:</td>
+                <td>{{ tourData.financial_manager.first_name + ' ' + tourData.financial_manager.last_name }}</td>
+            </tr>
+            <tr *ngIf='tourData.remarks'>
+                <td style='font-weight:bold;'>Admin Remarks:</td>
+                <td>{{ tourData.remarks }}</td>
             </tr>
         </table>
     </div>
+    <br>
     <div class='row'> 
-        <div class='col-md-4 col-lg-4 mx-auto'>
+        <div class='col-md-4 col-lg-4 mx-auto' style='text-align:center;'>
             <button class='btn btn-info' (click)='closeModal("view-tour");'>Close</button>
+        </div>
+    </div>
+    
+</jw-modal>
+<jw-modal id='create-tour'>
+    <div class='row'>
+        <h1 class='col-lg-4 col-md-4 mx-auto' style='text-align:center;'>Create Tour</h1>
+    </div>
+    <div>
+        <form [formGroup]='createTourForm'>
+            <div class='row'>
+                <div class='purpose col-md-8 col-lg-8 mx-auto'>
+                    <label for='create-purpose'>Purpose</label>
+                    <input type='text' class='form-control' formControlName='purpose' id='create-purpose'>
+                </div>
+            </div>
+            <br>
+            <div class='row'>
+                <div class='col-md-8 col-lg-8 mx-auto'>
+                    <div class='row'>
+                        <div class='create-start-date col-md-6 col-lg-6'>
+                            <label for='start-date'>Start Date</label>
+                            <input type='date' class='form-control' formControlName='startDate' id='create-start-date'>
+                        </div>
+                        <div class='create-end-date col-md-6 col-lg-6'>
+                            <label for='end-date'>End Date</label>
+                            <input type='date' class='form-control' formControlName='endDate' id='create-end-date'>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class='row'>
+                <div class='col-md-8 col-lg-8 mx-auto'>
+                    <div class='row'>
+                        <div class='create-mode-of-travel col-md-6 col-lg-6'>
+                            <label for='mode-of-travel'>Mode of Travel</label>
+                            <input type='text' class='form-control' formControlName='modeOfTravel' id='create-mode-of-travel'>
+                        </div>
+                        <div class='create-ticket-cost col-md-6 col-lg-6'>
+                            <label for='ticket-cost'>Ticket Cost</label>
+                            <input type='text' class='form-control' formControlName='ticketCost' id='create-ticket-cost'>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class='row'>
+                <div class='col-md-8 col-lg-8 mx-auto'>
+                    <div class='row'>
+                        <div class='create-origin-cab-fare col-md-6 col-lg-6'>
+                            <label for='origin-cab-fare'>Origin Cab Fare</label>
+                            <input type='text' class='form-control' formControlName='originCabFare' id='create-origin-cab-fare'>
+                        </div>
+                        <div class='create-destination-cab-fare col-md-6 col-lg-6'>
+                            <label for='destination-cab-fare'>Destination Cab Fare</label>
+                            <input type='text' class='form-control' formControlName='destinationCabFare' id='create-destination-cab-fare'>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class='row'>
+                <div class='col-md-8 col-lg-8 mx-auto'>
+                    <div class='row'>
+                        <div class='hotel-cost col-md-6 col-lg-6 mx-auto'>
+                            <label for='create-hotel-cost'>Hotel Cost</label>
+                            <input type='text' class='form-control' formControlName='hotelCost' id='create-hotel-cost'>
+                        </div>
+                        <div class='destination-conveyance col-md-6 col-lg-6 mx-auto'>
+                            <label for='create-destination-conveyance'>Destination Conveyance</label>
+                            <input type='text' class='form-control' formControlName='destinationConveyance' id='create-destination-conveyance'>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class='approving-manager' *ngIf='approvingManagers'>
+                <div class='approving-manager col-md-4 col-lg-4 mx-auto'>
+                    <label for='create-approving-manager'>Approving Manager</label>
+                    <select class='form-control' formControlName='approvingManager' id='create-approving-manager'>
+                        <option *ngFor='let am of approvingManagers' [value]='am.id'>{{ am.first_name + " " + am.last_name }}</option>
+                    </select>
+                </div>
+            </div>
+        </form>   
+    </div>
+    <br>
+    <div class='row'> 
+        <div class='col-md-4 col-lg-4 mx-auto' style='text-align:center'>
+            <button class='btn btn-info' style='margin-right:5px;' (click)='createSubmit("draft")'>Save As Draft</button>
+            <button class='btn btn-success' style='margin-right:5px;' (click)='createSubmit("submitted")'>Submit</button>
+            <button class='btn btn-danger'style='margin-right:5px;' (click)='closeModal("create-tour");'>Cancel</button>
+        </div>
+    </div>
+    
+</jw-modal>
+
+<jw-modal id='approve-tour'>
+    <div class='row'>
+        <h1 class='col-lg-4 col-md-4 mx-auto' style='text-align:center;'>Approve Tour</h1>
+    </div>
+    <br>
+    <div class='col-lg-6 col-md-6 mx-auto'>
+        <table class='table table-striped' *ngIf='tourData'>
+            <tr>    
+                <td style='font-weight:bold;'>Purpose:</td>
+                <td >{{ tourData.purpose }} </td>
+            </tr>
+            <tr>
+                <td style='font-weight:bold;'>Start Date:</td>
+                <td>{{ tourData.start_date }} </td>
+            </tr>
+            <tr>
+                <td style='font-weight:bold;'>End Date:</td>
+                <td>{{ tourData.end_date }}</td>
+            </tr>
+            <tr>
+                <td style='font-weight:bold;'>Mode of Travel:</td>
+                <td>{{ tourData.mode_of_travel }} </td>
+            </tr>
+            <tr>
+                <td style='font-weight:bold;'>Ticket Cost:</td>
+                <td>{{ tourData.ticket_cost }}</td>
+            </tr>
+            <tr>
+                <td style='font-weight:bold;'>Origin Cab Fare:</td>
+                <td>{{ tourData.origin_cab_fare }}</td>
+            </tr>
+            <tr>
+                <td style='font-weight:bold;'>Destination Cab Fare:</td>
+                <td>{{ tourData.destination_cab_fare }}</td>
+            </tr>
+            <tr>
+                <td style='font-weight:bold;'>Hotel Cost:</td>
+                <td>{{ tourData.hotel_cost }}</td>
+            </tr>
+            <tr>
+                <td style='font-weight:bold;'>Local Conveyance:</td>
+                <td>{{ tourData.conveyance }}
+            </tr>
+            <tr *ngIf='tourData.additional_information'>
+                <td style='font-weight:bold;'>Additional Information:</td>
+                <td>{{ tourData.additional_information }}
+            </tr>
+            <tr *ngIf='tourData.approving_manager'>
+                <td style='font-weight:bold;'>Approving Manager:</td>
+                <td>{{ tourData.approving_manager.first_name + ' ' + tourData.approving_manager.last_name }}
+            </tr>
+        </table>
+        <form [formGroup]='approveTourForm'>
+            <div class='row'>
+                <div class='status col-md-12 col-lg-12'>
+                    <label for='status'>Status</label>
+                    <select class='form-control' formControlName='status' id='status'>
+                        <option value='Approved'>Approved</option>
+                        <option value='Rejected'>Rejected</option>
+                        <option value='Request for Information'>Request for Information</option>
+                    </select>
+                </div>
+            </div>
+            <br>
+            <div class='row'>
+                <div class='remarks col-md-12 col-lg-12'>
+                    <label for='remarks'>Remarks</label>
+                    <input type='text' class='form-control' formControlName='remarks' id='remarks'>
+                </div>
+            </div>
+        </form>       
+    </div>
+    <br>
+    <div class='row'> 
+        <div class='col-md-4 col-lg-4 mx-auto' style='text-align:center'>
+            <button class='btn btn-success' style='margin-right:5px;' (click)='approveSubmit(tourData.id)'>Submit</button>
+            <button class='btn btn-danger'style='margin-right:5px;' (click)='closeModal("approve-tour");'>Cancel</button>
         </div>
     </div>
     

@@ -7,6 +7,7 @@ import { SessionStorageService } from 'angular-web-storage';
 })
 export class ToursService {
     url = 'http://127.0.0.1:8000/tours/';
+    am_url = 'http://127.0.0.1:8000/approving_managers/';
     httpOptions: any;
     token: string;
     
@@ -27,7 +28,19 @@ export class ToursService {
     }
     
     get_tour(id){
-        return this.http.get(this.url + id + "/", this.httpOptions)
+        return this.http.get(this.url + id + "/", this.httpOptions);
+    }
+    
+    edit_tour(id, data){
+        return this.http.put(this.url + id + "/", data, this.httpOptions);
+    }
+    
+    create_tour(data){
+        return this.http.post(this.url, data, this.httpOptions);
+    }
+    
+    get_approving_managers(){
+        return this.http.get(this.am_url, this.httpOptions);
     }
     
 }
