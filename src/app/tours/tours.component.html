@@ -30,7 +30,7 @@
                     <button class='btn btn-info manager-btn' style='margin-right:5px;' *ngIf='position == "Manager" && tour.status != "Submitted to Finance"' (click)='approve(tour.id)'>Approve</button>
                     <button class='btn btn-success manager-btn' style='margin-right:5px;' *ngIf='position == "Manager" && tour.status == "Approved"' (click)='submitToFinance(tour.id)'>Submit to Finance</button>
                     <button class='btn btn-success finance-manager-btn' style='margin-right:5px;' *ngIf='position == "Finance Manager"' (click)='approve(tour.id)'>Approve</button>
-                    <button class='btn btn-info' style='margin-right:5px;' *ngIf='tour.status=="Draft" && position=="Regular"' (click)='edit(tour.id)'>Edit</button>
+                    <button class='btn btn-info' style='margin-right:5px;' *ngIf='(tour.status=="Draft" || tour.status=="Request for Information") && position=="Regular" ' (click)='edit(tour.id)'>Edit</button>
                     <button class='btn btn-secondary' (click)='view(tour.id)'>View</button>
                 </td>
             </tr>
@@ -75,11 +75,11 @@
                     <div class='row'>
                         <div class='mode-of-travel col-md-6 col-lg-6'>
                             <label for='mode-of-travel'>Mode of Travel</label>
-                            <input type='text' class='form-control' formControlName='modeOfTravel' id='mode-of-travel'>
+                            <input type='text' class='form-control' formControlName='modeOfTravel' id='mode-of-travel' placeholder='E.g. $400.00'>
                         </div>
                         <div class='ticket-cost col-md-6 col-lg-6'>
                             <label for='ticket-cost'>Ticket Cost</label>
-                            <input type='text' class='form-control' formControlName='ticketCost' id='ticket-cost'>
+                            <input type='text' class='form-control' formControlName='ticketCost' id='ticket-cost' placeholder='E.g. $400.00'>
                         </div>
                     </div>
                 </div>
@@ -90,11 +90,11 @@
                     <div class='row'>
                         <div class='origin-cab-fare col-md-6 col-lg-6'>
                             <label for='origin-cab-fare'>Origin Cab Fare</label>
-                            <input type='text' class='form-control' formControlName='originCabFare' id='origin-cab-fare'>
+                            <input type='text' class='form-control' formControlName='originCabFare' id='origin-cab-fare' placeholder='E.g. $400.00'>
                         </div>
                         <div class='destination-cab-fare col-md-6 col-lg-6'>
                             <label for='destination-cab-fare'>Destination Cab Fare</label>
-                            <input type='text' class='form-control' formControlName='destinationCabFare' id='destination-cab-fare'>
+                            <input type='text' class='form-control' formControlName='destinationCabFare' id='destination-cab-fare' placeholder='E.g. $400.00'>
                         </div>
                     </div>
                 </div>
@@ -105,7 +105,7 @@
                     <div class='row'>
                         <div class='hotel-cost col-md-6 col-lg-6 mx-auto'>
                             <label for='hotel-cost'>Hotel Cost</label>
-                            <input type='text' class='form-control' formControlName='hotelCost' id='hotel-cost'>
+                            <input type='text' class='form-control' formControlName='hotelCost' id='hotel-cost' placeholder='E.g. $400.00'>
                         </div>
                         <div class='destination-conveyance col-md-6 col-lg-6 mx-auto'>
                             <label for='destination-conveyance'>Destination Conveyance</label>
@@ -255,7 +255,7 @@
                         </div>
                         <div class='create-ticket-cost col-md-6 col-lg-6'>
                             <label for='ticket-cost'>Ticket Cost</label>
-                            <input type='text' class='form-control' formControlName='ticketCost' id='create-ticket-cost'>
+                            <input type='text' class='form-control' formControlName='ticketCost' id='create-ticket-cost' placeholder='E.g. $400.00'>
                         </div>
                     </div>
                 </div>
@@ -266,11 +266,11 @@
                     <div class='row'>
                         <div class='create-origin-cab-fare col-md-6 col-lg-6'>
                             <label for='origin-cab-fare'>Origin Cab Fare</label>
-                            <input type='text' class='form-control' formControlName='originCabFare' id='create-origin-cab-fare'>
+                            <input type='text' class='form-control' formControlName='originCabFare' id='create-origin-cab-fare' placeholder='E.g. $400.00'>
                         </div>
                         <div class='create-destination-cab-fare col-md-6 col-lg-6'>
                             <label for='destination-cab-fare'>Destination Cab Fare</label>
-                            <input type='text' class='form-control' formControlName='destinationCabFare' id='create-destination-cab-fare'>
+                            <input type='text' class='form-control' formControlName='destinationCabFare' id='create-destination-cab-fare' placeholder='E.g. $400.00'>
                         </div>
                     </div>
                 </div>
@@ -281,7 +281,7 @@
                     <div class='row'>
                         <div class='hotel-cost col-md-6 col-lg-6 mx-auto'>
                             <label for='create-hotel-cost'>Hotel Cost</label>
-                            <input type='text' class='form-control' formControlName='hotelCost' id='create-hotel-cost'>
+                            <input type='text' class='form-control' formControlName='hotelCost' id='create-hotel-cost' placeholder='E.g. $400.00'>
                         </div>
                         <div class='destination-conveyance col-md-6 col-lg-6 mx-auto'>
                             <label for='create-destination-conveyance'>Destination Conveyance</label>

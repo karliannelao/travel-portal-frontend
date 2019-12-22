@@ -151,11 +151,11 @@ export class ToursComponent implements OnInit {
         }   
         
         if(status=='submitted'){
-            tour_data.status = 'Submitted';
+            tour_data['status'] = 'Submitted'
         }
         
         if(approvingManagerID){
-            tour_data.approving_manager_id = approvingManagerID
+            tour_data['approving_manager_id'] = approvingManagerID
         }
 
         this.toursService.edit_tour(id, tour_data)
@@ -193,10 +193,10 @@ export class ToursComponent implements OnInit {
         }   
         
         if(status == 'submitted'){
-            tour_data.status = 'Submitted';
+            tour_data['status'] = 'Submitted';
         }
         if(approvingManagerID){
-            tour_data.approving_manager_id = approvingManagerID
+            tour_data['approving_manager_id'] = approvingManagerID
         }
 
         this.toursService.create_tour(tour_data)
@@ -216,19 +216,19 @@ export class ToursComponent implements OnInit {
         var datetime = this.datePipe.transform(date, 'yyyy-MM-dd hh:mm:ss');
         
         var tour_data = {
-            feedback_date:datetime;
+            feedback_date:datetime
         }
         
         if(status){
-            tour_data.status = status;
+            tour_data['status'] = status;
         }
         
         if(remarks){
-            tour_data.remarks = remarks;
+            tour_data['remarks'] = remarks;
         }
         
         if(this.position == 'Finance Manager'){
-            tour_data.financial_manager_id = this.userID;
+            tour_data['financial_manager_id'] = this.userID;
         }
         
         
