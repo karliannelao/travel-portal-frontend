@@ -52,6 +52,7 @@
                 <div class='purpose col-md-8 col-lg-8 mx-auto'>
                     <label for='purpose'>Purpose</label>
                     <input type='text' class='form-control' formControlName='purpose' id='purpose'>
+                    <div class='error' *ngIf='editTourForm.controls["purpose"].errors'>This field is required.</div>
                 </div>
             </div>
             <br>
@@ -61,10 +62,12 @@
                         <div class='start-date col-md-6 col-lg-6'>
                             <label for='start-date'>Start Date</label>
                             <input type='date' class='form-control' formControlName='startDate' id='start-date'>
+                            <div class='error' *ngIf='editTourForm.controls["startDate"].errors'>This field is required.</div>
                         </div>
                         <div class='end-date col-md-6 col-lg-6'>
                             <label for='end-date'>End Date</label>
                             <input type='date' class='form-control' formControlName='endDate' id='end-date'>
+                            <div class='error' *ngIf='editTourForm.controls["endDate"].errors'>This field is required.</div>
                         </div>
                     </div>
                 </div>
@@ -76,10 +79,12 @@
                         <div class='mode-of-travel col-md-6 col-lg-6'>
                             <label for='mode-of-travel'>Mode of Travel</label>
                             <input type='text' class='form-control' formControlName='modeOfTravel' id='mode-of-travel' placeholder='E.g. $400.00'>
+                            <div class='error' *ngIf='editTourForm.controls["modeOfTravel"].errors'>This field is required.</div>
                         </div>
                         <div class='ticket-cost col-md-6 col-lg-6'>
                             <label for='ticket-cost'>Ticket Cost</label>
                             <input type='text' class='form-control' formControlName='ticketCost' id='ticket-cost' placeholder='E.g. $400.00'>
+                            <div class='error' *ngIf='editTourForm.controls["ticketCost"].errors'>This field is required.</div>
                         </div>
                     </div>
                 </div>
@@ -91,10 +96,12 @@
                         <div class='origin-cab-fare col-md-6 col-lg-6'>
                             <label for='origin-cab-fare'>Origin Cab Fare</label>
                             <input type='text' class='form-control' formControlName='originCabFare' id='origin-cab-fare' placeholder='E.g. $400.00'>
+                            <div class='error' *ngIf='editTourForm.controls["originCabFare"].errors'>This field is required.</div>
                         </div>
                         <div class='destination-cab-fare col-md-6 col-lg-6'>
                             <label for='destination-cab-fare'>Destination Cab Fare</label>
                             <input type='text' class='form-control' formControlName='destinationCabFare' id='destination-cab-fare' placeholder='E.g. $400.00'>
+                            <div class='error' *ngIf='editTourForm.controls["destinationCabFare"].errors'>This field is required.</div>
                         </div>
                     </div>
                 </div>
@@ -106,10 +113,12 @@
                         <div class='hotel-cost col-md-6 col-lg-6 mx-auto'>
                             <label for='hotel-cost'>Hotel Cost</label>
                             <input type='text' class='form-control' formControlName='hotelCost' id='hotel-cost' placeholder='E.g. $400.00'>
+                            <div class='error' *ngIf='editTourForm.controls["hotelCost"].errors'>This field is required.</div>
                         </div>
                         <div class='destination-conveyance col-md-6 col-lg-6 mx-auto'>
                             <label for='destination-conveyance'>Destination Conveyance</label>
                             <input type='text' class='form-control' formControlName='destinationConveyance' id='destination-conveyance'>
+                            <div class='error' *ngIf='editTourForm.controls["destinationConveyance"].errors'>This field is required.</div>
                         </div>
                     </div>
                 </div>
@@ -134,8 +143,8 @@
     <br>
     <div class='row'> 
         <div class='col-md-4 col-lg-4 mx-auto' style='text-align:center'>
-            <button class='btn btn-info' style='margin-right:5px;' (click)='editSubmit(tourID)'>Save As Draft</button>
-            <button class='btn btn-success' style='margin-right:5px;' (click)='editSubmit(tourID, "submitted")'>Submit</button>
+            <button class='btn btn-info' style='margin-right:5px;' (click)='editSubmit(tourID)' [disabled]='!editTourForm.valid'>Save As Draft</button>
+            <button class='btn btn-success' style='margin-right:5px;' (click)='editSubmit(tourID, "submitted")' [disabled]='!editTourForm.valid'>Submit</button>
             <button class='btn btn-danger'style='margin-right:5px;' (click)='closeModal("edit-tour");'>Cancel</button>
         </div>
     </div>
@@ -228,6 +237,7 @@
                 <div class='purpose col-md-8 col-lg-8 mx-auto'>
                     <label for='create-purpose'>Purpose</label>
                     <input type='text' class='form-control' formControlName='purpose' id='create-purpose'>
+                    <div class='error' *ngIf='createTourForm.controls["purpose"].errors'>This field is required.</div>
                 </div>
             </div>
             <br>
@@ -237,10 +247,12 @@
                         <div class='create-start-date col-md-6 col-lg-6'>
                             <label for='start-date'>Start Date</label>
                             <input type='date' class='form-control' formControlName='startDate' id='create-start-date'>
+                            <div class='error' *ngIf='createTourForm.controls["startDate"].errors'>This field is required.</div>
                         </div>
                         <div class='create-end-date col-md-6 col-lg-6'>
                             <label for='end-date'>End Date</label>
                             <input type='date' class='form-control' formControlName='endDate' id='create-end-date'>
+                            <div class='error' *ngIf='createTourForm.controls["endDate"].errors'>This field is required.</div>
                         </div>
                     </div>
                 </div>
@@ -252,10 +264,12 @@
                         <div class='create-mode-of-travel col-md-6 col-lg-6'>
                             <label for='mode-of-travel'>Mode of Travel</label>
                             <input type='text' class='form-control' formControlName='modeOfTravel' id='create-mode-of-travel'>
+                            <div class='error' *ngIf='createTourForm.controls["modeOfTravel"].errors'>This field is required.</div>
                         </div>
                         <div class='create-ticket-cost col-md-6 col-lg-6'>
                             <label for='ticket-cost'>Ticket Cost</label>
                             <input type='text' class='form-control' formControlName='ticketCost' id='create-ticket-cost' placeholder='E.g. $400.00'>
+                            <div class='error' *ngIf='createTourForm.controls["ticketCost"].errors'>This field is required.</div>
                         </div>
                     </div>
                 </div>
@@ -267,10 +281,12 @@
                         <div class='create-origin-cab-fare col-md-6 col-lg-6'>
                             <label for='origin-cab-fare'>Origin Cab Fare</label>
                             <input type='text' class='form-control' formControlName='originCabFare' id='create-origin-cab-fare' placeholder='E.g. $400.00'>
+                            <div class='error' *ngIf='createTourForm.controls["originCabFare"].errors'>This field is required.</div>
                         </div>
                         <div class='create-destination-cab-fare col-md-6 col-lg-6'>
                             <label for='destination-cab-fare'>Destination Cab Fare</label>
                             <input type='text' class='form-control' formControlName='destinationCabFare' id='create-destination-cab-fare' placeholder='E.g. $400.00'>
+                            <div class='error' *ngIf='createTourForm.controls["destinationCabFare"].errors'>This field is required.</div>
                         </div>
                     </div>
                 </div>
@@ -282,10 +298,12 @@
                         <div class='hotel-cost col-md-6 col-lg-6 mx-auto'>
                             <label for='create-hotel-cost'>Hotel Cost</label>
                             <input type='text' class='form-control' formControlName='hotelCost' id='create-hotel-cost' placeholder='E.g. $400.00'>
+                            <div class='error' *ngIf='createTourForm.controls["hotelCost"].errors'>This field is required.</div>
                         </div>
                         <div class='destination-conveyance col-md-6 col-lg-6 mx-auto'>
                             <label for='create-destination-conveyance'>Destination Conveyance</label>
                             <input type='text' class='form-control' formControlName='destinationConveyance' id='create-destination-conveyance'>
+                            <div class='error' *ngIf='createTourForm.controls["destinationConveyance"].errors'>This field is required.</div>
                         </div>
                     </div>
                 </div>
@@ -304,9 +322,10 @@
     <br>
     <div class='row'> 
         <div class='col-md-4 col-lg-4 mx-auto' style='text-align:center'>
-            <button class='btn btn-info' style='margin-right:5px;' (click)='createSubmit("draft")'>Save As Draft</button>
-            <button class='btn btn-success' style='margin-right:5px;' (click)='createSubmit("submitted")'>Submit</button>
+            <button class='btn btn-info' style='margin-right:5px;' (click)='createSubmit("draft")' [disabled]='!createTourForm.valid'>Save As Draft</button>
+            <button class='btn btn-success' style='margin-right:5px;' (click)='createSubmit("submitted")' [disabled]='!createTourForm.valid'>Submit</button>
             <button class='btn btn-danger'style='margin-right:5px;' (click)='closeModal("create-tour");'>Cancel</button>
+            {{ createTourForm.errors }}
         </div>
     </div>
     
