@@ -25,6 +25,7 @@ export class ToursComponent implements OnInit {
   tourData: any;
   approvingManagers: any;
   userID: any;
+  today: string;
   
   constructor(private sessionStorageService:SessionStorageService, private router:Router, private toursService:ToursService,
     private modalService: ModalService, private formBuilder: FormBuilder, private datePipe:DatePipe) { 
@@ -46,6 +47,10 @@ export class ToursComponent implements OnInit {
         }, err => {
             console.log(err);
         });
+
+
+        
+    this.today = this.datePipe.transform(new Date(), 'yyyy-MM-dd')
     
     this.editTourForm = this.formBuilder.group({
             purpose:['', Validators.required],
@@ -64,7 +69,7 @@ export class ToursComponent implements OnInit {
         
     this.createTourForm = this.formBuilder.group({
             purpose:['', Validators.required],
-            startDate:['', Validators.required],
+            startDate:[this.today, Validators.required],
             endDate:['', Validators.required],
             modeOfTravel:['', Validators.required],
             ticketCost:['', Validators.required],
@@ -77,8 +82,8 @@ export class ToursComponent implements OnInit {
         });
         
     this.approveTourForm = this.formBuilder.group({
-            status:['', Validators.required],
-            remarks:['', Validators.required],
+            status:[''],
+            remarks:[''],
         });
 
     this.toursService.get_tours()
