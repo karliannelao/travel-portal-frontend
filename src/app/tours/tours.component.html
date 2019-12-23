@@ -144,7 +144,7 @@
     <div class='row'> 
         <div class='col-md-4 col-lg-4 mx-auto' style='text-align:center'>
             <button class='btn btn-info' style='margin-right:5px;' (click)='editSubmit(tourID)' [disabled]='!editTourForm.valid'>Save As Draft</button>
-            <button class='btn btn-success' style='margin-right:5px;' (click)='editSubmit(tourID, "submitted")' [disabled]='!editTourForm.valid'>Submit</button>
+            <button class='btn btn-success' style='margin-right:5px;' (click)='editSubmit(tourID, "submitted")' [disabled]='!editTourForm.controls["approvingManager"].value'>Submit</button>
             <button class='btn btn-danger'style='margin-right:5px;' (click)='closeModal("edit-tour");'>Cancel</button>
         </div>
     </div>
@@ -323,7 +323,7 @@
     <div class='row'> 
         <div class='col-md-4 col-lg-4 mx-auto' style='text-align:center'>
             <button class='btn btn-info' style='margin-right:5px;' (click)='createSubmit("draft")' [disabled]='!createTourForm.valid'>Save As Draft</button>
-            <button class='btn btn-success' style='margin-right:5px;' (click)='createSubmit("submitted")' [disabled]='!createTourForm.valid'>Submit</button>
+            <button class='btn btn-success' style='margin-right:5px;' (click)='createSubmit("submitted")' [disabled]='!createTourForm.controls["approvingManager"].value'>Submit</button>
             <button class='btn btn-danger'style='margin-right:5px;' (click)='closeModal("create-tour");'>Cancel</button>
             {{ createTourForm.errors }}
         </div>
